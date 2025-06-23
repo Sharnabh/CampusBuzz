@@ -281,9 +281,9 @@ class ChatsViewController: UIViewController {
     }
     
     private func createGroup() {
-        let createGroupVC = CreateGroupViewController()
-        createGroupVC.delegate = self
-        let navController = UINavigationController(rootViewController: createGroupVC)
+        let selectUsersVC = SelectUsersViewController()
+        selectUsersVC.delegate = self
+        let navController = UINavigationController(rootViewController: selectUsersVC)
         navController.modalPresentationStyle = .pageSheet
         present(navController, animated: true)
     }
@@ -379,7 +379,26 @@ extension ChatsViewController: CreateGroupDelegate {
         let messagesVC = MessagesViewController.create(for: group)
         navigationController?.pushViewController(messagesVC, animated: true)
         
-        // Refresh conversations to show the new group
-        refreshConversations()
+        // Refresh conversations to show the new group with a slight delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.refreshConversations()
+        }
+    }
+}
+
+// MARK: - SelectUsersDelegate
+
+extension ChatsViewController: SelectUsersDelegate {
+    func didSelectUsers(_ users: [User]) {
+        // Dismiss the user selection view and show group creation
+        dismiss(animated: true) {
+            let createGroupVC = CreateGroupViewController()
+            createGroupVC.delegate = self
+            createGroupVC.setSelectedUsers(users)
+            
+            let navController = UINavigationController(rootViewController: createGroupVC)
+            navController.modalPresentationStyle = .pageSheet
+            self.present(navController, animated: true)
+        }
     }
 }

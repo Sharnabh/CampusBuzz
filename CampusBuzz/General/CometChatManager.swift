@@ -219,6 +219,28 @@ class CometChatManager {
         }
     }
     
+    /// Add members to a group
+    func addMembersToGroup(groupGUID: String, users: [User], completion: @escaping (Result<[String: Any]?, CometChatManagerError>) -> Void) {
+        var groupMembers: [GroupMember] = []
+        for user in users {
+            if let uid = user.uid {
+                let groupMember = GroupMember(UID: uid, groupMemberScope: .participant)
+                groupMembers.append(groupMember)
+            }
+        }
+        
+        guard !groupMembers.isEmpty else {
+            completion(.failure(.groupCreationFailed("No valid users to add")))
+            return
+        }
+        
+        CometChat.addMembersToGroup(guid: groupGUID, groupMembers: groupMembers) { response in
+            completion(.success(response))
+        } onError: { error in
+            completion(.failure(.groupCreationFailed(error?.errorDescription ?? "Failed to add members")))
+        }
+    }
+    
     
     // MARK: - Media Handling
     
