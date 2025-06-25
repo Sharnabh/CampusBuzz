@@ -159,12 +159,15 @@ class CometChatManager {
         }
         
         // Set group metadata for campus-specific info
-        let metadata: [String: Any] = [
+        let metadataDict: [String: String] = [
             "type": type.rawValue,
             "college": college,
             "created_by": "CampusBuzz"
         ]
-        group.metadata = metadata
+        
+        // Store metadata directly as string dictionary (CometChat compatible format)
+        group.metadata = metadataDict
+        print("📝 Group metadata set: \(metadataDict)")
         
         CometChat.createGroup(group: group) { createdGroup in
             print("✅ Group created: \(createdGroup.guid)")
@@ -221,26 +224,98 @@ class CometChatManager {
     
     /// Add members to a group
     func addMembersToGroup(groupGUID: String, users: [User], completion: @escaping (Result<[String: Any]?, CometChatManagerError>) -> Void) {
-        var groupMembers: [GroupMember] = []
-        for user in users {
-            if let uid = user.uid {
-                let groupMember = GroupMember(UID: uid, groupMemberScope: .participant)
-                groupMembers.append(groupMember)
-            }
-        }
+        print("🏗️ Adding \(users.count) members to group: \(groupGUID)")
         
-        guard !groupMembers.isEmpty else {
-            completion(.failure(.groupCreationFailed("No valid users to add")))
-            return
+        var groupMembers: [GroupMember] = []
+        
+        for user in users {
+            let member = GroupMember(UID: user.uid ?? "", groupMemberScope: .participant)
+            groupMembers.append(member)
         }
         
         CometChat.addMembersToGroup(guid: groupGUID, groupMembers: groupMembers) { response in
+            print("✅ Successfully added members to group")
             completion(.success(response))
         } onError: { error in
+            print("❌ Failed to add members to group: \(error?.errorDescription ?? "Unknown error")")
             completion(.failure(.groupCreationFailed(error?.errorDescription ?? "Failed to add members")))
         }
     }
     
+    /// Create sample groups for demo purposes
+    func createSampleGroupsBatch(completion: @escaping (Result<[Group], CometChatManagerError>) -> Void) {
+        print("🏗️ CometChatManager: Creating batch sample groups...")
+        
+        let sampleGroupsData = [
+            ("CS Engineering Hub", CometChatConfig.GroupType.semester, "Computer Science Engineering students community", "🎓"),
+            ("Photography Club", CometChatConfig.GroupType.club, "Capture moments, share techniques, organize photo walks", "📸"),
+            ("Drama Society", CometChatConfig.GroupType.club, "Theater and performing arts community", "🎭"),
+            ("Basketball Team", CometChatConfig.GroupType.club, "Join our basketball training sessions", "🏀"),
+            ("Study Group - Math", CometChatConfig.GroupType.study, "Solve math problems together", "📐"),
+            ("Career Guidance", CometChatConfig.GroupType.general, "Get advice on internships and job opportunities", "💼"),
+            ("Tech Startups", CometChatConfig.GroupType.general, "Discuss entrepreneurship and startup ideas", "🚀"),
+            ("Gaming Squad", CometChatConfig.GroupType.club, "Discuss latest games and organize tournaments", "🎮"),
+            ("Fitness Enthusiasts", CometChatConfig.GroupType.club, "Share workout tips and motivate each other", "💪"),
+            ("Music Society", CometChatConfig.GroupType.club, "For music lovers - share talent, organize concerts", "🎵")
+        ]
+        
+        let college = "Demo University"
+        var createdGroups: [Group] = []
+        var errorCount = 0
+        let totalGroups = sampleGroupsData.count
+        
+        let dispatchGroup = DispatchGroup()
+        
+        for (index, groupData) in sampleGroupsData.enumerated() {
+            let (name, type, description, icon) = groupData
+            
+            dispatchGroup.enter()
+            
+            // Add timestamp to ensure uniqueness
+            let uniqueName = "\(icon) \(name)"
+            let timestamp = Int(Date().timeIntervalSince1970)
+            let guid = "demo_\(type.rawValue)_\(timestamp)_\(index)"
+            
+            let group = Group(guid: guid, name: uniqueName, groupType: .public, password: nil)
+            group.groupDescription = description
+            
+            // Set metadata directly as string dictionary (CometChat compatible format)
+            let metadataDict: [String: String] = [
+                "type": type.rawValue,
+                "college": college,
+                "created_by": "CampusBuzz_Demo",
+                "category": type.rawValue
+            ]
+            
+            group.metadata = metadataDict
+            print("📝 Group metadata set: \(metadataDict)")
+            
+            print("🏗️ Creating group: \(uniqueName) with GUID: \(guid)")
+            
+            // Use delay instead of blocking sleep
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.5) {
+                CometChat.createGroup(group: group) { createdGroup in
+                    print("✅ Successfully created: \(createdGroup.name ?? "Unknown") - \(createdGroup.guid)")
+                    createdGroups.append(createdGroup)
+                    dispatchGroup.leave()
+                } onError: { error in
+                    print("❌ Failed to create '\(uniqueName)': \(error?.errorDescription ?? "Unknown error")")
+                    errorCount += 1
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            print("🏁 Batch creation completed: \(createdGroups.count) success, \(errorCount) errors")
+            
+            if createdGroups.isEmpty {
+                completion(.failure(.groupCreationFailed("Failed to create any groups")))
+            } else {
+                completion(.success(createdGroups))
+            }
+        }
+    }
     
     // MARK: - Media Handling
     

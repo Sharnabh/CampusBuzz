@@ -339,9 +339,9 @@ class CreateGroupViewController: UIViewController {
         loadingAlert.message = "Adding users to group..."
         
         // Use CometChatManager to add members
-        CometChatManager.shared.addMembersToGroup(groupGUID: group.guid, users: users) { [weak self] result in
+        CometChatManager.shared.addMembersToGroup(groupGUID: group.guid, users: users) { [weak self] (result: Result<[String: Any]?, CometChatManagerError>) in
             DispatchQueue.main.async {
-                loadingAlert.dismiss(animated: true) {
+                loadingAlert.dismiss(animated: true, completion: {
                     switch result {
                     case .success(let response):
                         print("✅ Successfully added users to group. Response: \(response ?? [:])")
@@ -353,7 +353,7 @@ class CreateGroupViewController: UIViewController {
                         self?.delegate?.didCreateGroup(group)
                         self?.dismiss(animated: true)
                     }
-                }
+                })
             }
         }
     }
