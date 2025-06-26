@@ -80,11 +80,41 @@ class ChatsViewController: UIViewController {
     }
     
     private func setupConversationList() {
+        setupConversationListWithFilter(conversationType: .none)
+    }
+    
+    private func setupConversationListWithFilter(conversationType: CometChat.ConversationType) {
+        print("🔧 Setting up conversation list with filter: \(conversationType)")
+        
+        // Remove existing conversation list if it exists
+        if conversationList != nil {
+            conversationList.willMove(toParent: nil)
+            conversationList.view.removeFromSuperview()
+            conversationList.removeFromParent()
+        }
+        
+        // Create new conversation list with the specified filter
         conversationList = CometChatConversations()
         
-        // Set up conversation request builder with initial filter (all conversations)
+        // Set up conversation request builder with the specified filter
         let requestBuilder = ConversationRequest.ConversationRequestBuilder(limit: 30)
-            .setConversationType(conversationType: .none)
+        
+        // Apply the conversation type filter
+        switch conversationType {
+        case .user:
+            print("📱 Filtering for user conversations only")
+            requestBuilder.setConversationType(conversationType: .user)
+        case .group:
+            print("👥 Filtering for group conversations only")
+            requestBuilder.setConversationType(conversationType: .group)
+        case .none:
+            print("📋 Showing all conversations (no filter)")
+            // Don't set any filter for "All" - this will show both users and groups
+            break
+        @unknown default:
+            break
+        }
+        
         conversationList.set(conversationRequestBuilder: requestBuilder)
         
         // Set up tap handler using closure-based API
@@ -234,6 +264,8 @@ class ChatsViewController: UIViewController {
     }
     
     @objc private func segmentChanged(_ sender: UISegmentedControl) {
+        let previousType = currentConversationType
+        
         switch sender.selectedSegmentIndex {
         case 0: // All
             currentConversationType = .none
@@ -245,11 +277,10 @@ class ChatsViewController: UIViewController {
             currentConversationType = .none
         }
         
-        // Update the conversation request builder with the new filter
-        let requestBuilder = ConversationRequest.ConversationRequestBuilder(limit: 30)
-            .setConversationType(conversationType: currentConversationType)
-        conversationList.set(conversationRequestBuilder: requestBuilder)
-        conversationList.reload()
+        print("🔄 Segment changed from \(previousType) to \(currentConversationType)")
+        
+        // Remove the current conversation list and recreate it with the new filter
+        setupConversationListWithFilter(conversationType: currentConversationType)
     }
     
     @objc private func refreshConversations() {
@@ -281,9 +312,9 @@ class ChatsViewController: UIViewController {
     }
     
     private func createGroup() {
-        let createGroupVC = CreateGroupViewController()
-        createGroupVC.delegate = self
-        let navController = UINavigationController(rootViewController: createGroupVC)
+        let selectUsersVC = SelectUsersViewController()
+        selectUsersVC.delegate = self
+        let navController = UINavigationController(rootViewController: selectUsersVC)
         navController.modalPresentationStyle = .pageSheet
         present(navController, animated: true)
     }
@@ -379,7 +410,26 @@ extension ChatsViewController: CreateGroupDelegate {
         let messagesVC = MessagesViewController.create(for: group)
         navigationController?.pushViewController(messagesVC, animated: true)
         
-        // Refresh conversations to show the new group
-        refreshConversations()
+        // Refresh conversations to show the new group with a slight delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.refreshConversations()
+        }
+    }
+}
+
+// MARK: - SelectUsersDelegate
+
+extension ChatsViewController: SelectUsersDelegate {
+    func didSelectUsers(_ users: [User]) {
+        // Dismiss the user selection view and show group creation
+        dismiss(animated: true) {
+            let createGroupVC = CreateGroupViewController()
+            createGroupVC.delegate = self
+            createGroupVC.setSelectedUsers(users)
+            
+            let navController = UINavigationController(rootViewController: createGroupVC)
+            navController.modalPresentationStyle = .pageSheet
+            self.present(navController, animated: true)
+        }
     }
 }

@@ -11,11 +11,13 @@ class CreateGroupViewController: UIViewController {
     private var groupNameTextField: UITextField!
     private var groupDescriptionTextView: UITextView!
     private var groupTypeSegmentedControl: UISegmentedControl!
+    private var selectedUsersLabel: UILabel!
     private var createButton: UIButton!
     
     // MARK: - Properties
     weak var delegate: CreateGroupDelegate?
     private var selectedImage: UIImage?
+    private var selectedUsers: [User] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,12 +25,22 @@ class CreateGroupViewController: UIViewController {
         setupScrollView()
         setupFormElements()
         setupConstraints()
+        updateSelectedUsersInfo()
+    }
+    
+    // MARK: - Public Methods
+    
+    func setSelectedUsers(_ users: [User]) {
+        self.selectedUsers = users
+        if isViewLoaded {
+            updateSelectedUsersInfo()
+        }
     }
     
     // MARK: - Setup Methods
     
     private func setupUI() {
-        title = "Create Group"
+        updateTitle()
         view.backgroundColor = .systemBackground
         
         // Navigation bar buttons
@@ -47,6 +59,14 @@ class CreateGroupViewController: UIViewController {
         
         // Initially disable create button
         navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+    
+    private func updateTitle() {
+        if selectedUsers.isEmpty {
+            title = "Create Group"
+        } else {
+            title = "Create Group (\(selectedUsers.count) users)"
+        }
     }
     
     private func setupScrollView() {
@@ -98,6 +118,14 @@ class CreateGroupViewController: UIViewController {
         groupTypeSegmentedControl.selectedSegmentIndex = 0
         groupTypeSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         
+        // Selected users label
+        selectedUsersLabel = UILabel()
+        selectedUsersLabel.font = UIFont.systemFont(ofSize: 14)
+        selectedUsersLabel.textColor = .secondaryLabel
+        selectedUsersLabel.numberOfLines = 0
+        selectedUsersLabel.text = "No users selected"
+        selectedUsersLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         // Create button (alternative to nav bar button for better UX)
         createButton = UIButton(type: .system)
         createButton.setTitle("Create Group", for: .normal)
@@ -115,6 +143,7 @@ class CreateGroupViewController: UIViewController {
         contentView.addSubview(groupNameTextField)
         contentView.addSubview(groupDescriptionTextView)
         contentView.addSubview(groupTypeSegmentedControl)
+        contentView.addSubview(selectedUsersLabel)
         contentView.addSubview(createButton)
     }
     
@@ -157,8 +186,13 @@ class CreateGroupViewController: UIViewController {
             groupTypeSegmentedControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             groupTypeSegmentedControl.heightAnchor.constraint(equalToConstant: 32),
             
+            // Selected users label
+            selectedUsersLabel.topAnchor.constraint(equalTo: groupTypeSegmentedControl.bottomAnchor, constant: 20),
+            selectedUsersLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            selectedUsersLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            
             // Create button
-            createButton.topAnchor.constraint(equalTo: groupTypeSegmentedControl.bottomAnchor, constant: 40),
+            createButton.topAnchor.constraint(equalTo: selectedUsersLabel.bottomAnchor, constant: 40),
             createButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             createButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             createButton.heightAnchor.constraint(equalToConstant: 50),
@@ -167,6 +201,17 @@ class CreateGroupViewController: UIViewController {
     }
     
     // MARK: - Helper Methods
+    
+    private func updateSelectedUsersInfo() {
+        updateTitle()
+        
+        if selectedUsers.isEmpty {
+            selectedUsersLabel.text = "No users selected for this group"
+        } else {
+            let userNames = selectedUsers.compactMap { $0.name ?? $0.uid }.joined(separator: ", ")
+            selectedUsersLabel.text = "Selected users (\(selectedUsers.count)): \(userNames)"
+        }
+    }
     
     private func updateCreateButtonState() {
         let isValid = !(groupNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true)
@@ -220,9 +265,17 @@ class CreateGroupViewController: UIViewController {
         // Create group using CometChat
         CometChat.createGroup(group: group) { [weak self] createdGroup in
             DispatchQueue.main.async {
-                loadingAlert.dismiss(animated: true) {
-                    self?.delegate?.didCreateGroup(createdGroup)
-                    self?.dismiss(animated: true)
+                guard let self = self else { return }
+                
+                // If there are users to add, add them to the group
+                if !self.selectedUsers.isEmpty {
+                    self.addUsersToGroup(createdGroup, users: self.selectedUsers, loadingAlert: loadingAlert)
+                } else {
+                    // No users to add, just complete the creation
+                    loadingAlert.dismiss(animated: true) {
+                        self.delegate?.didCreateGroup(createdGroup)
+                        self.dismiss(animated: true)
+                    }
                 }
             }
         } onError: { [weak self] error in
@@ -279,6 +332,30 @@ class CreateGroupViewController: UIViewController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+    
+    private func addUsersToGroup(_ group: Group, users: [User], loadingAlert: UIAlertController) {
+        // Update loading message
+        loadingAlert.message = "Adding users to group..."
+        
+        // Use CometChatManager to add members
+        CometChatManager.shared.addMembersToGroup(groupGUID: group.guid, users: users) { [weak self] (result: Result<[String: Any]?, CometChatManagerError>) in
+            DispatchQueue.main.async {
+                loadingAlert.dismiss(animated: true, completion: {
+                    switch result {
+                    case .success(let response):
+                        print("✅ Successfully added users to group. Response: \(response ?? [:])")
+                        self?.delegate?.didCreateGroup(group)
+                        self?.dismiss(animated: true)
+                    case .failure(let error):
+                        // Even if adding users fails, the group was created successfully
+                        print("⚠️ Group created but failed to add some users: \(error)")
+                        self?.delegate?.didCreateGroup(group)
+                        self?.dismiss(animated: true)
+                    }
+                })
+            }
+        }
     }
 }
 

@@ -30,24 +30,12 @@
         <!--Explore-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
+                <viewController id="Y6W-OH-hqX" customClass="ExploreViewController" customModule="CampusBuzz" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Explore Screen Coming Soon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="explore-label">
-                                <rect key="frame" x="20" y="415.33333333333331" width="353" height="21.333333333333314"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <color key="textColor" systemColor="secondaryLabelColor"/>
-                            </label>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="explore-label" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="explore-center-y"/>
-                            <constraint firstItem="explore-label" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="explore-leading"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="explore-label" secondAttribute="trailing" constant="20" id="explore-trailing"/>
-                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" image="magnifyingglass.circle" catalog="system" selectedImage="magnifyingglass.circle.fill" id="lw1-Y4-Fv5"/>
                     <navigationItem key="navigationItem" title="Explore" id="explore-nav-item"/>
@@ -61,9 +49,6 @@
     <resources>
         <image name="magnifyingglass.circle" catalog="system" width="128" height="123"/>
         <image name="magnifyingglass.circle.fill" catalog="system" width="128" height="123"/>
-        <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

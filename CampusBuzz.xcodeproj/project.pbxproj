@@ -7,27 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B9EB1A34A38553A9D4C3FB77 /* Pods_CampusBuzz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C321FCA593D69026676920F /* Pods_CampusBuzz.framework */; };
+		A33FA2D9BE35C8CFDC85F48A /* Pods_CampusBuzz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF5DE05C5D6D98AAF2ACDEC7 /* Pods_CampusBuzz.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		CE4131562E068FC800D42E54 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		0B7B8D9BA1742041F0BCCDDA /* Pods-CampusBuzz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CampusBuzz.release.xcconfig"; path = "Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz.release.xcconfig"; sourceTree = "<group>"; };
-		3C321FCA593D69026676920F /* Pods_CampusBuzz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CampusBuzz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AC2136392073A631BFE3B118 /* Pods-CampusBuzz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CampusBuzz.debug.xcconfig"; path = "Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz.debug.xcconfig"; sourceTree = "<group>"; };
 		CE482BFD2E068C9400713E88 /* CampusBuzz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CampusBuzz.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF5DE05C5D6D98AAF2ACDEC7 /* Pods_CampusBuzz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CampusBuzz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E304C2DC818B5622CC911FCB /* Pods-CampusBuzz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CampusBuzz.release.xcconfig"; path = "Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz.release.xcconfig"; sourceTree = "<group>"; };
+		FF738317F90A8788D1AA5C62 /* Pods-CampusBuzz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CampusBuzz.debug.xcconfig"; path = "Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -56,7 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9EB1A34A38553A9D4C3FB77 /* Pods_CampusBuzz.framework in Frameworks */,
+				A33FA2D9BE35C8CFDC85F48A /* Pods_CampusBuzz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,7 +56,7 @@
 				CE482BFF2E068C9400713E88 /* CampusBuzz */,
 				CE482BFE2E068C9400713E88 /* Products */,
 				EDFDC0DD961F896367DB4767 /* Pods */,
-				D242D8BA5B2DDFE0C66DDC4B /* Frameworks */,
+				D2B4E8B576BD48E4B1EC2653 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -81,10 +68,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D242D8BA5B2DDFE0C66DDC4B /* Frameworks */ = {
+		D2B4E8B576BD48E4B1EC2653 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3C321FCA593D69026676920F /* Pods_CampusBuzz.framework */,
+				CF5DE05C5D6D98AAF2ACDEC7 /* Pods_CampusBuzz.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -92,8 +79,8 @@
 		EDFDC0DD961F896367DB4767 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				AC2136392073A631BFE3B118 /* Pods-CampusBuzz.debug.xcconfig */,
-				0B7B8D9BA1742041F0BCCDDA /* Pods-CampusBuzz.release.xcconfig */,
+				FF738317F90A8788D1AA5C62 /* Pods-CampusBuzz.debug.xcconfig */,
+				E304C2DC818B5622CC911FCB /* Pods-CampusBuzz.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -105,13 +92,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CE482C102E068C9800713E88 /* Build configuration list for PBXNativeTarget "CampusBuzz" */;
 			buildPhases = (
-				0D02576C43F6818B6EE067B0 /* [CP] Check Pods Manifest.lock */,
+				FD7568ACAAC2923C5E63CEEC /* [CP] Check Pods Manifest.lock */,
 				CE482BF92E068C9400713E88 /* Sources */,
 				CE482BFA2E068C9400713E88 /* Frameworks */,
 				CE482BFB2E068C9400713E88 /* Resources */,
-				CE4131562E068FC800D42E54 /* Embed Frameworks */,
-				94285E9E3EDAD4F5EBA90F54 /* [CP] Embed Pods Frameworks */,
-				8BEB29518AB4E2902B14FC66 /* [CP] Copy Pods Resources */,
+				120117D3C8801003D9E1CC7D /* [CP] Embed Pods Frameworks */,
+				88F686170909581A91A36EC5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -170,7 +156,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0D02576C43F6818B6EE067B0 /* [CP] Check Pods Manifest.lock */ = {
+		120117D3C8801003D9E1CC7D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		88F686170909581A91A36EC5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FD7568ACAAC2923C5E63CEEC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -192,48 +220,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8BEB29518AB4E2902B14FC66 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		94285E9E3EDAD4F5EBA90F54 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CampusBuzz/Pods-CampusBuzz-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -249,7 +235,7 @@
 /* Begin XCBuildConfiguration section */
 		CE482C112E068C9800713E88 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AC2136392073A631BFE3B118 /* Pods-CampusBuzz.debug.xcconfig */;
+			baseConfigurationReference = FF738317F90A8788D1AA5C62 /* Pods-CampusBuzz.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -259,6 +245,8 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CampusBuzz/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CampusBuzz;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -279,7 +267,7 @@
 		};
 		CE482C122E068C9800713E88 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0B7B8D9BA1742041F0BCCDDA /* Pods-CampusBuzz.release.xcconfig */;
+			baseConfigurationReference = E304C2DC818B5622CC911FCB /* Pods-CampusBuzz.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -289,6 +277,8 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CampusBuzz/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CampusBuzz;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
