@@ -13,6 +13,7 @@ target 'CampusBuzz' do
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
   pod 'FirebaseCore'
+  pod 'Firebase'
   pod 'FirebaseStorage'
 
 end
